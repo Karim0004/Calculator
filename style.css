@@ -1,0 +1,11 @@
+* {
+    border-style:dotted;
+    border-color:brown;
+    border-width: 2px;
+}
+
+#calculator {
+    width: 400px;
+    height: 600px;
+    margin: 16px auto 0px auto;
+}
