@@ -84,7 +84,7 @@ function calculate (array) {
     function operateArray returns false if an operator is not followed by a number */
     if (!operateArray(operatorsOrder[0], array)) return 'ERROR: A number must follow an operator';
     if (!operateArray(operatorsOrder[1], array)) return 'ERROR: A number must follow an operator';
-    return (array);
+    return (array[0]);
 }
 
 let equation = [];
@@ -120,14 +120,19 @@ function processInput (event) {
 
     // calculate equation //
     else if (value === '=') {
-        lastResult = calculate(equation);
+        const decimals = Math.pow(10, 4);
+        lastResult = Math.round((calculate(equation) + Number.EPSILON) * decimals) / decimals;
         updateDisplay(lastResult);
         equation = [];
         return;
     }
 
-    else if (value === 'ANS') equation.push(lastResult);
-
+    else if (value === 'ANS') {
+        if (!isNaN(equation[equation.length-1])) {
+            equation[equation.length-1] =  `${equation[equation.length-1]}` + `${lastResult}`;
+        }
+        else equation.push(lastResult);
+    }
     // update the display //
     updateDisplay(equation);
 }
