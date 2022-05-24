@@ -4,7 +4,7 @@ const numbers = document.getElementById('numbers');
 for (let i = 1; i <= 11; i++) {
     let content = i;
     if (i === 10) content = 0;
-    if (i === 11) content = 'CLEAR';
+    if (i === 11) content = 'ANS';
     
     const n = document.createElement('button');
     n.textContent = content;
@@ -14,7 +14,7 @@ for (let i = 1; i <= 11; i++) {
 
 // create action buttons //
 const actions = document.getElementById('actions');
-const actionButtons = ['x', '÷', '+', '-', '='];
+const actionButtons = ['CLEAR', 'x', '÷', '+', '-', '='];
 
 for (let i = 0; i < actionButtons.length; i++) {
     const action = document.createElement('button');
@@ -87,7 +87,8 @@ function calculate (array) {
     return (array);
 }
 
-let equation = []
+let equation = [];
+let lastResult;
 
 // processing values inputted by user //
 function processInput (event) {
@@ -119,13 +120,13 @@ function processInput (event) {
 
     // calculate equation //
     else if (value === '=') {
-        const result = calculate(equation);
-        if (typeof (result) === 'string') {
-            updateDisplay(result);
-            equation = [];
-            return;
-        }
+        lastResult = calculate(equation);
+        updateDisplay(lastResult);
+        equation = [];
+        return;
     }
+
+    else if (value === 'ANS') equation.push(lastResult);
 
     // update the display //
     updateDisplay(equation);
@@ -133,6 +134,10 @@ function processInput (event) {
 
 
 function updateDisplay(valueToDisplay) {
-    const display = document.getElementById('display');
+    const display = document.querySelector('#display p');
+    
+    if (Array.isArray(valueToDisplay)) {
+        valueToDisplay = valueToDisplay.join(' ');
+    }
     display.textContent = valueToDisplay;
 }
