@@ -64,6 +64,8 @@ function operateArray(operators, array) {
             if (isNaN(array[i+1])) return false;
             if (isNaN(array[i-1])) return false;
             array.splice(i-1, 3, operate(array[i], array[i-1], array[i+1]));
+            operateArray(operators, array);
+            break;
         }
     }
     return true;
